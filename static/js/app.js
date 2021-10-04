@@ -33,6 +33,29 @@ function buildCharts(sample){
             }
         }];
         Plotly.newPlot("bubble", bubbleData, bubbleChart);
+
+        // Build bar chart
+        var yticks = otu_ids.slice(0,10).map(function(otuID) {
+            return `OTU ${otuID}`;
+        }).reverse();
+        console.log(yticks);
+
+        var barData = [
+            {
+                y: yticks,
+                x: sample_values.slice(0,10).reverse(),
+                text: otu_labels.slice(0,10).reverse(),
+                type: "bar",
+                orientation: "h"
+            }
+        ];
+        console.log(barData);
+        var barLayout ={
+            title: "Top Bacteria Culture",
+            margin: {t: 30, l: 150}
+        };
+
+        Plotly.newPlot("bar", barData, barLayout);
     });
 }
 
