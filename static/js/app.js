@@ -60,7 +60,24 @@ function buildCharts(sample){
 }
 
 function buildMetadata(sample) {
-    
+    d3.json("samples.json").then(function(data){
+        var metadata = data.metadata;
+        var resultsArrray = metadata.filter(function(data){
+            return data.id == sample;
+        });
+        var result = resultsArrray[0];
+        var PANEL = d3.select("#sample-metadata");
+
+        // Remove existing data
+        PANEL.html("");
+        // Create a loop
+        Object.entries(result).forEach(function([key, value]){
+            console.log(key, value);
+            PANEL.append("h6").text(`${key.toUpperCase()}: ${value}`)
+        });
+        // Build gauge chart
+        buildGauge(result.wfreq);
+    })
 };
 
 function init (){
@@ -80,6 +97,11 @@ function init (){
         buildCharts(sampleOne);
         buildMetadata(sampleOne);
     });
+}
+
+function optionChanged(newSample){
+    buildCharts(newSample);
+    buildMetadata(newSample);
 }
 
 // Initialize dashboard
